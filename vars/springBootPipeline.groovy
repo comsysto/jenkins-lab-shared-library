@@ -11,13 +11,13 @@ def call(body) {
                 sh 'git clean -dfx'
             }
 
-            dir(${config.servicename}) {
+            dir(config.servicename) {
                 stage('Build') {
                     sh './gradlew clean build'
                 }
 
                 stage('Deploy') {
-                    deploy(${config.filename}, ${config.username}, ${config.hostname}, ${config.port})
+                    deploy(config.filename, config.username, config.hostname, config.port)
                 }
 
                 stage('Healthcheck') {
