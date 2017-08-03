@@ -11,19 +11,17 @@ def call(body) {
                 sh 'git clean -dfx'
             }
 
-            dir('service-1') {
+            dir(${config.servicename}) {
                 stage('Build') {
                     sh './gradlew clean build'
                 }
 
                 stage('Deploy') {
-                    withCredentials([usernamePassword(credentialsId: 'Deployserver', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        deploy(${config.filename}, '$USERNAME', ${config.hostname}, ${config.port})
-                    }
+                    deploy(${config.filename}, ${config.username}, ${config.hostname}, ${config.port})
                 }
 
                 stage('Healthcheck') {
-                    healthcheck('http://jenkinslab-deployserver:9090/health')
+                    healthcheck("http://${config.hostname}:${config.port}/health")
                 }
             }
         }
