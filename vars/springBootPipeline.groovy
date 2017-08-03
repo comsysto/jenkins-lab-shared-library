@@ -1,10 +1,10 @@
 def call(body) {
-    def config = [:]
-    body.resolveStrategy = Closure.DELEGATE_FIRST
-    body.delegate = config
-    body()
-
     node {
+	    def config = [:]
+	    body.resolveStrategy = Closure.DELEGATE_FIRST
+	    body.delegate = config
+	    body()
+
         try {
             stage('Checkout') {
                 checkout scm
